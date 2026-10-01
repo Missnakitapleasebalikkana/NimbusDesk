@@ -1,0 +1,126 @@
+:root {
+    --nimbus-maroon: #601a35;
+    --nimbus-pink: #f191b5;
+    --nimbus-dark: #3a0d1f;
+    --nimbus-bg: #f9f2f4;
+}
+
+body {
+    background-color: var(--nimbus-bg);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow-x: hidden;
+}
+
+/* Navbar */
+.top-navbar {
+    background-color: var(--nimbus-maroon);
+    color: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    z-index: 1030;
+}
+
+.top-navbar .navbar-brand {
+    color: var(--nimbus-pink);
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.btn-burger {
+    color: white;
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.btn-burger:focus {
+    outline: none;
+}
+
+/* Sidebar Wrapper */
+.sidebar-wrapper {
+    min-height: calc(100vh - 56px);
+    width: 250px;
+    background-color: var(--nimbus-dark);
+    color: white;
+    transition: margin 0.25s ease-out;
+    flex-shrink: 0;
+}
+
+/* Collapsed State */
+.sidebar-wrapper.collapsed {
+    margin-left: -250px;
+}
+
+.sidebar-wrapper .nav-link {
+    color: #e0b3c6;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.sidebar-wrapper .nav-link:hover, .sidebar-wrapper .nav-link.active {
+    color: white;
+    background-color: var(--nimbus-maroon);
+    border-radius: 5px;
+}
+
+.sidebar-heading {
+    padding: 0.875rem 1.25rem;
+    font-size: 1.2rem;
+    color: var(--nimbus-pink);
+    font-weight: bold;
+}
+
+/* Main Content Wrapper */
+#page-content-wrapper {
+    min-width: 100vw;
+    transition: margin 0.25s ease-out;
+}
+
+@media (min-width: 768px) {
+    #page-content-wrapper {
+        min-width: 0;
+        width: 100%;
+    }
+}
+
+/* Theming Buttons & Cards */
+.btn-primary {
+    background-color: var(--nimbus-pink);
+    border-color: var(--nimbus-pink);
+    color: var(--nimbus-maroon);
+    font-weight: bold;
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+    background-color: #e07a9e !important;
+    border-color: #e07a9e !important;
+    color: white !important;
+}
+
+.btn-outline-primary {
+    color: var(--nimbus-maroon);
+    border-color: var(--nimbus-pink);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--nimbus-pink);
+    color: var(--nimbus-maroon);
+}
+
+.card {
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    border: none;
+    border-radius: 10px;
+}
+
+.card-header {
+    background-color: #fff;
+    border-bottom: 2px solid var(--nimbus-bg);
+}
+
+/* Badges for Status */
+.ticket-status-open { background-color: #ffc107; color: #000; }
+.ticket-status-progress { background-color: #17a2b8; color: #fff; }
+.ticket-status-resolved { background-color: var(--nimbus-pink); color: var(--nimbus-dark); }
