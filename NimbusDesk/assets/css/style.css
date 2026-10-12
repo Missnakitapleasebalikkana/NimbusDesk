@@ -110,17 +110,73 @@ body {
 }
 
 .card {
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
     border: none;
-    border-radius: 10px;
+    border-radius: 12px;
 }
 
 .card-header {
     background-color: #fff;
-    border-bottom: 2px solid var(--nimbus-bg);
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    border-top-left-radius: 12px !important;
+    border-top-right-radius: 12px !important;
 }
 
 /* Badges for Status */
-.ticket-status-open { background-color: #ffc107; color: #000; }
-.ticket-status-progress { background-color: #17a2b8; color: #fff; }
-.ticket-status-resolved { background-color: var(--nimbus-pink); color: var(--nimbus-dark); }
+.ticket-status-open { background-color: #ffc107; color: #000; font-weight: 600; }
+.ticket-status-progress { background-color: #0dcaf0; color: #000; font-weight: 600; }
+.ticket-status-resolved { background-color: var(--nimbus-pink); color: var(--nimbus-dark); font-weight: 600; }
+
+/* Table Improvements */
+.table {
+    margin-bottom: 0;
+}
+
+.table th {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #6c757d;
+    font-weight: 700;
+    padding-top: 0.85rem;
+    padding-bottom: 0.85rem;
+}
+
+.table td {
+    padding-top: 0.85rem;
+    padding-bottom: 0.85rem;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(96, 26, 53, 0.02);
+}
+
+/* Print Media Styles */
+@media print {
+    .top-navbar,
+    #sidebar,
+    .btn-burger,
+    .btn,
+    .alert,
+    form {
+        display: none !important;
+    }
+
+    #page-content-wrapper {
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+        overflow: visible !important;
+    }
+
+    body {
+        background-color: #fff !important;
+    }
+
+    .card {
+        border: 1px solid #ddd !important;
+        box-shadow: none !important;
+        page-break-inside: avoid;
+    }
+}
+

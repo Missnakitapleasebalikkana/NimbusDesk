@@ -1,13 +1,22 @@
+<?php
+use NimbusDesk\Core\Auth;
+Auth::init();
+$currentUser = Auth::user() ?? ['name' => 'IT Admin', 'role' => 'admin', 'department' => 'IT Operations'];
+$flashSuccess = Auth::getFlash('success');
+$flashDanger = Auth::getFlash('danger');
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $title ?? 'NimbusDesk - IT Help Desk' ?></title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/NimbusDesk/assets/images/icon.png">
     <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/NimbusDesk/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <!-- FontAwesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/NimbusDesk/assets/vendor/fontawesome/css/all.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/NimbusDesk/assets/css/style.css">
 </head>
@@ -16,20 +25,32 @@
         <!-- Top Navbar -->
         <nav class="navbar navbar-expand-lg top-navbar px-3 flex-shrink-0">
             <div class="d-flex align-items-center">
-                <button id="sidebarToggle" class="btn-burger me-3"><i class="fa-solid fa-bars"></i></button>
-                <a class="navbar-brand m-0" href="/NimbusDesk/admin/index.php">
-                    <i class="fa-solid fa-cloud me-2"></i>NimbusDesk IT
+                <button id="sidebarToggle" class="btn-burger me-3" title="Toggle Sidebar"><i class="fa-solid fa-bars"></i></button>
+                <a class="navbar-brand d-flex align-items-center m-0" href="/NimbusDesk/admin/index.php">
+                    <img src="/NimbusDesk/assets/images/icon.png" alt="NimbusDesk Logo" width="30" height="30" class="me-2 rounded-circle border border-white">
+                    NimbusDesk IT
                 </a>
+                <span class="badge bg-warning text-dark ms-2 text-uppercase"><?= htmlspecialchars($currentUser['role'] ?? 'Technician') ?></span>
             </div>
             <div class="ms-auto dropdown">
-                <button class="btn btn-outline-light dropdown-toggle border-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="https://ui-avatars.com/api/?name=Admin+User&background=f191b5&color=601a35&rounded=true" alt="Avatar" width="30" height="30" class="me-2">
-                    Admin User
+                <button class="btn btn-outline-light dropdown-toggle border-0 d-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="<?= \NimbusDesk\Core\View::avatarUrl($currentUser['name'], 'f191b5', '601a35') ?>" alt="Avatar" width="32" height="32" class="me-2 rounded-circle">
+                    <span class="d-none d-md-inline"><?= htmlspecialchars($currentUser['name']) ?></span>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
-                    <li><a class="dropdown-item" href="#"><i class="fa-solid fa-gear me-2"></i>Settings</a></li>
+                    <li class="px-3 py-1">
+                        <small class="text-muted d-block">Signed in as</small>
+                        <strong class="d-block text-truncate" style="max-width: 180px;"><?= htmlspecialchars($currentUser['email'] ?? '') ?></strong>
+                        <span class="badge bg-light text-dark text-capitalize mt-1"><?= htmlspecialchars($currentUser['department'] ?? 'IT Support') ?></span>
+                    </li>
                     <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item text-danger" href="/NimbusDesk/index.php"><i class="fa-solid fa-right-from-bracket me-2"></i>Logout</a></li>
+                    <li>
+                        <a class="dropdown-item" href="/NimbusDesk/profile.php">
+                            <i class="fa-solid fa-id-badge me-2 text-primary"></i>My Profile
+                        </a>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-danger" href="/NimbusDesk/logout.php"><i class="fa-solid fa-right-from-bracket me-2"></i>Sign Out</a></li>
                 </ul>
             </div>
         </nav>
@@ -37,7 +58,7 @@
         <div class="d-flex flex-grow-1 overflow-hidden">
             <!-- Sidebar -->
             <div id="sidebar" class="sidebar-wrapper d-flex flex-column pb-3">
-                <div class="sidebar-heading text-center mt-3 mb-2">IT Administration</div>
+                <div class="sidebar-heading text-center mt-3 mb-2">Help Desk Control</div>
                 <ul class="nav flex-column px-3 flex-grow-1">
                     <li class="nav-item">
                         <a class="nav-link <?= ($activeMenu ?? '') === 'dashboard' ? 'active' : '' ?>" href="/NimbusDesk/admin/index.php">
@@ -50,15 +71,41 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link <?= ($activeMenu ?? '') === 'reports' ? 'active' : '' ?>" href="#">
-                            <i class="fa-solid fa-chart-pie me-2"></i> Reports (Soon)
+                        <a class="nav-link <?= ($activeMenu ?? '') === 'reports' ? 'active' : '' ?>" href="/NimbusDesk/admin/reports.php">
+                            <i class="fa-solid fa-chart-pie me-2"></i> Incident Analytics
                         </a>
                     </li>
+                    <?php if (($currentUser['role'] ?? '') === 'admin'): ?>
+                    <li class="nav-item">
+                        <a class="nav-link <?= ($activeMenu ?? '') === 'users' ? 'active' : '' ?>" href="/NimbusDesk/admin/users.php">
+                            <i class="fa-solid fa-users-gear me-2"></i> User Accounts
+                        </a>
+                    </li>
+                    <?php endif; ?>
                 </ul>
+                <div class="px-3 mt-auto">
+                    <a href="/NimbusDesk/logout.php" class="btn btn-sm btn-outline-light w-100">
+                        <i class="fa-solid fa-right-from-bracket me-1"></i> Sign Out
+                    </a>
+                </div>
             </div>
 
             <!-- Page Content -->
             <div id="page-content-wrapper" class="flex-grow-1 px-4 py-4" style="overflow-y: auto;">
+                <?php if (!empty($flashSuccess)): ?>
+                    <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+                        <i class="fa-solid fa-circle-check me-2"></i><?= htmlspecialchars($flashSuccess) ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                <?php endif; ?>
+
+                <?php if (!empty($flashDanger)): ?>
+                    <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+                        <i class="fa-solid fa-triangle-exclamation me-2"></i><?= htmlspecialchars($flashDanger) ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                <?php endif; ?>
+
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-2 pb-3 mb-4 border-bottom">
                     <h2 class="h3 fw-bold" style="color: var(--nimbus-maroon);"><?= $pageHeader ?? 'IT Dashboard' ?></h2>
                 </div>
@@ -70,7 +117,7 @@
     </div>
 
     <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/NimbusDesk/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="/NimbusDesk/assets/js/main.js"></script>
 </body>
 </html>
