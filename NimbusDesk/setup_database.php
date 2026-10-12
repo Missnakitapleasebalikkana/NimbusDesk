@@ -12,6 +12,21 @@ $port = 3306;
 $username = 'root';
 $password = ''; // Default XAMPP MySQL password is empty
 
+$isCli = (php_sapi_name() === 'cli');
+
+if (!$isCli) {
+    header('Content-Type: text/html; charset=utf-8');
+    echo '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>NimbusDesk Database Setup</title>';
+    echo '<link rel="stylesheet" href="/NimbusDesk/assets/vendor/bootstrap/css/bootstrap.min.css">';
+    echo '<link rel="icon" type="image/png" href="/NimbusDesk/assets/images/icon.png">';
+    echo '</head><body class="bg-light py-5"><div class="container" style="max-width: 650px;">';
+    echo '<div class="card p-4 shadow-sm border-0"><div class="text-center mb-3">';
+    echo '<img src="/NimbusDesk/assets/images/icon.png" width="70" height="70" class="rounded-circle mb-2 border border-2 border-white shadow-sm">';
+    echo '<h4 class="fw-bold mb-1" style="color:#601a35; letter-spacing: 1px;">NIMBUSDESK</h4>';
+    echo '<p class="text-muted small">One-Click Database Setup & Seeder</p></div>';
+    echo '<pre class="bg-dark text-light p-3 rounded small mb-0" style="font-family: monospace; max-height: 280px; overflow-y: auto;">';
+}
+
 echo "=== NimbusDesk Database Setup ===\n";
 
 try {
@@ -126,8 +141,20 @@ try {
     echo "[✓] Seeded clean, realistic aviation incident tickets and audit notes.\n";
     echo "\n=== Database Clean Reset Finished Successfully! ===\n";
 
+    if (!$isCli) {
+        echo '</pre>';
+        echo '<div class="alert alert-success mt-3 mb-0 small text-center"><i class="fa-solid fa-circle-check me-1"></i> Database initialized successfully! All default accounts are ready.</div>';
+        echo '<div class="text-center mt-3"><a href="/NimbusDesk/index.php" class="btn btn-primary px-4 py-2 fw-bold shadow-sm" style="background-color:#f191b5; border-color:#f191b5; color:#601a35;">Open NimbusDesk Sign In &rarr;</a></div>';
+        echo '</div></div></body></html>';
+    }
+
 } catch (PDOException $e) {
     echo "\n[ERROR] Database setup failed:\n" . $e->getMessage() . "\n";
     echo "Tip: Ensure MySQL is running in your XAMPP Control Panel.\n";
+    if (!$isCli) {
+        echo '</pre>';
+        echo '<div class="alert alert-danger mt-3 small"><strong>Database Error:</strong> ' . htmlspecialchars($e->getMessage()) . '<br><small>Tip: Check that Apache & MySQL are started in your XAMPP Control Panel.</small></div>';
+        echo '</div></div></body></html>';
+    }
     exit(1);
 }
