@@ -1,0 +1,28 @@
+/* Employee Portal Specific Styles */
+.employee-badge {
+    background: #0284c7;
+    color: #fff;
+}
+
+.ticket-row-hover:hover {
+    background-color: #f1f5f9;
+    cursor: pointer;
+}
+
+.timeline-event {
+    border-left: 2px solid #e2e8f0;
+    padding-left: 18px;
+    position: relative;
+    padding-bottom: 20px;
+}
+
+.timeline-event::before {
+    content: '';
+    position: absolute;
+    left: -6px;
+    top: 4px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--nimbus-maroon);
+}

@@ -1,0 +1,33 @@
+/* IT Administrator & Supervisor Portal CSS */
+.admin-badge {
+    background: #dc2626;
+    color: #fff;
+}
+
+.kpi-card-critical {
+    border-left: 4px solid #dc2626;
+}
+
+.kpi-card-open {
+    border-left: 4px solid #f59e0b;
+}
+
+.kpi-card-progress {
+    border-left: 4px solid #0284c7;
+}
+
+.kpi-card-resolved {
+    border-left: 4px solid #10b981;
+}
+
+.analytics-bar {
+    height: 12px;
+    border-radius: 6px;
+    background-color: #e2e8f0;
+    overflow: hidden;
+}
+
+.analytics-bar-fill {
+    height: 100%;
+    border-radius: 6px;
+}

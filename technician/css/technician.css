@@ -1,0 +1,16 @@
+/* IT Help Desk Technician Portal CSS */
+.technician-badge {
+    background: #d97706;
+    color: #fff;
+}
+
+.ticket-quick-card {
+    border-left: 4px solid var(--nimbus-maroon);
+}
+
+.timeline-note-box {
+    background-color: #f8fafc;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    padding: 12px;
+}
